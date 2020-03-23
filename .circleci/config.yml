@@ -1,0 +1,43 @@
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: cimg/base:2020.01
+  working_directory: ~/gradle-multimodule-goof
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - run:
+          name: Install dependencies
+          command: echo "Install dependencies"
+
+  test_v1:
+    <<: *defaults
+    steps:
+      - run:
+          name: Tests for v1
+          command: echo "Tests for v1"
+
+  test_v2:
+    <<: *defaults
+    steps:
+      - run:
+          name: Tests for v2
+          command: echo "Tests for v2"
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - install:
+          name: Install
+      - test_v1:
+          name: Tests for v1
+          requires:
+            - Install
+      - test_v2:
+          name: Tests for v2
+          requires:
+            - Install
